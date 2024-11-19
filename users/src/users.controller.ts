@@ -45,8 +45,8 @@ export class UsersController {
   }
 
   @MessagePattern('users.delete')
-  async deleteUser(id: string) {
-    const result = await this.usersService.deleteById(id);
+  async deleteUser(payload: { id: string }) {
+    const result = await this.usersService.deleteById(payload.id);
 
     return result;
   }
