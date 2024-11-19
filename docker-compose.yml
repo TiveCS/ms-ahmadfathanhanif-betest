@@ -22,8 +22,10 @@ services:
   # svc-users:
   #   build: ./users
 
-  # gateway:
-  #   build: ./gateway
+  gateway:
+    build: ./gateway
+    networks:
+      - backend
 
 networks:
   backend:
