@@ -1,0 +1,30 @@
+services:
+  db:
+    image: mongo:latest
+    restart: always
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+    volumes:
+      - './db/data/db-files:/data/db'
+      - './db/init/:/docker-entrypoint-initdb.d/'
+    ports:
+      - 27017:27017
+    networks:
+      - backend
+
+  # svc-auth:
+  #   build: ./auth
+
+  # svc-users:
+  #   build: ./users
+
+  # gateway:
+  #   build: ./gateway
+
+networks:
+  backend:
+    driver: bridge

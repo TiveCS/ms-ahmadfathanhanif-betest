@@ -1,0 +1,18 @@
+Backend test
+
+• Create microservices (Nodejs-Express) for CRUD operation and store in database (MongoDB) for user data
+  - User data : Id, userName, accountNumber, emailAddress, identityNumber
+• Protect the APIs using the authorization header JWT
+• Validate authorization header JWT
+• Deploy into any platform services and running
+• Create Unit Test (optional)
+Notes:
+• Provide API to generate JWT token
+• For read operation please create functions to get user by accountNumber and get user by IdentityNumber.
+• Please use your name with the following format:
+o Database name (i.e: db_********_betest)
+o Microservices/Project name (i.e: ms-********-betest)
+o Git Repo name (i.e: ********-betest.git)
+(change ******** with your name)
+
+Send the codes by git repository (github / bitbucket/ gitlab) link
