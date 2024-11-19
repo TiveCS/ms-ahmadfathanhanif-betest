@@ -15,6 +15,7 @@ async function bootstrap() {
   const swaggerConfig = new DocumentBuilder()
     .setTitle('BE Test API Documentation')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const swaggerDocumentFactory = () =>

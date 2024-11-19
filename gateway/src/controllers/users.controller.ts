@@ -10,7 +10,9 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
@@ -18,21 +20,24 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiQuery,
+  ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
-import { USERS_SERVICE } from '../constants/proxy.constant';
-import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { UsersMessageKey } from 'src/constants/users/users-message-key.constant';
+import { AuthenticatedGuard } from 'src/shared/guards/authenticated.guard';
+import { USERS_SERVICE } from '../constants/proxy.constant';
 import { CreateUserDto } from '../dto/users/create-user.dto';
 import { FindUserDto } from '../dto/users/find-user.dto';
 import { UpdateUserDto } from '../dto/users/update-user.dto';
-import { UsersMessageKey } from 'src/constants/users/users-message-key.constant';
 
 @Controller({
   path: 'users',
   version: ['1'],
 })
+@UseGuards(AuthenticatedGuard)
 @ApiTags('users')
+@ApiSecurity('bearer')
 export class UsersController {
   constructor(
     @Inject(USERS_SERVICE) private readonly usersServiceClient: ClientProxy,
