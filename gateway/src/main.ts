@@ -14,8 +14,6 @@ async function bootstrap() {
     defaultVersion: '1',
   });
 
-  const config = app.get(ConfigService<Env>);
-
   const swaggerConfig = new DocumentBuilder()
     .setTitle('BE Test API Documentation')
     .setVersion('1.0')
@@ -26,6 +24,8 @@ async function bootstrap() {
 
   SwaggerModule.setup('api', app, swaggerDocumentFactory());
 
-  await app.listen(config.get('GATEWAY_PORT'));
+  const port = process.env.PORT || process.env.GATEWAY_PORT || 8000;
+
+  await app.listen(port);
 }
 bootstrap();

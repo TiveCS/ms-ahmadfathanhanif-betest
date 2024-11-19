@@ -13,7 +13,7 @@ async function bootstrap() {
       transport: Transport.TCP,
       options: {
         host: '0.0.0.0',
-        port: process.env.PORT! || 8002,
+        port: process.env.PORT || process.env.SVC_USERS_PORT || 8002,
       },
     } as TcpOptions,
   );
