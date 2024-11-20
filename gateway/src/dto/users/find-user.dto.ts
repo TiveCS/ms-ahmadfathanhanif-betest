@@ -5,10 +5,10 @@ export class FindUserDto {
   @IsString()
   @IsOptional()
   @ApiProperty()
-  accountNumber: string;
+  accountNumber?: string;
 
   @IsString()
   @IsOptional()
   @ApiProperty({ example: '1234567890' })
-  identityNumber: string;
+  identityNumber?: string;
 }

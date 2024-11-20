@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -25,6 +24,11 @@ import {
 } from '@nestjs/swagger';
 import { firstValueFrom } from 'rxjs';
 import { UsersMessageKey } from 'src/constants/users/users-message-key.constant';
+import { CreateUserResponse } from 'src/responses/users/create-user.response';
+import { DeleteUserResponse } from 'src/responses/users/delete-user.response';
+import { GetUserByIdResponse } from 'src/responses/users/get-user-by-id.response';
+import { GetUsersResponse } from 'src/responses/users/get-users.response';
+import { UpdateUserResponse } from 'src/responses/users/update-user.response';
 import { AuthenticatedGuard } from 'src/shared/guards/authenticated.guard';
 import { USERS_SERVICE } from '../constants/proxy.constant';
 import { CreateUserDto } from '../dto/users/create-user.dto';
@@ -47,7 +51,7 @@ export class UsersController {
   @ApiCreatedResponse({ description: 'User created' })
   @ApiBadRequestResponse({ description: 'Invalid payload' })
   async createUser(@Body() dto: CreateUserDto) {
-    const response = await firstValueFrom(
+    const response: CreateUserResponse = await firstValueFrom(
       this.usersServiceClient.send(UsersMessageKey.CREATE, dto),
     );
 
@@ -59,38 +63,10 @@ export class UsersController {
   @ApiQuery({ name: 'identityNumber', required: false })
   @ApiOkResponse({ description: 'User found' })
   @ApiNotFoundResponse({ description: 'User not found' })
-  @ApiBadRequestResponse({
-    description:
-      "Only one of 'accountNumber' or 'identityNumber' should be passed",
-  })
-  async findUser(@Query() dto: FindUserDto) {
-    const isBothExists = dto.accountNumber && dto.identityNumber;
-    const isBothNotExists = !dto.accountNumber && !dto.identityNumber;
-
-    if (isBothExists || isBothNotExists) {
-      throw new BadRequestException(
-        "Only one of 'accountNumber' or 'identityNumber' should be passed",
-      );
-    }
-
-    let response;
-    if (dto.accountNumber) {
-      response = await firstValueFrom(
-        this.usersServiceClient.send(
-          UsersMessageKey.GET_BY_ACCOUNT_NUMBER,
-          dto.accountNumber,
-        ),
-      );
-    }
-
-    if (dto.identityNumber) {
-      response = await firstValueFrom(
-        this.usersServiceClient.send(
-          UsersMessageKey.GET_BY_IDENTITY_NUMBER,
-          dto.identityNumber,
-        ),
-      );
-    }
+  async getUsers(@Query() dto: FindUserDto) {
+    const response: GetUsersResponse = await firstValueFrom(
+      this.usersServiceClient.send(UsersMessageKey.GET_MANY, dto),
+    );
 
     if (!response) throw new NotFoundException('User not found');
 
@@ -100,12 +76,10 @@ export class UsersController {
   @Get(':id')
   @ApiOkResponse({ description: 'User found' })
   @ApiNotFoundResponse({ description: 'User not found' })
-  async getUser(@Param('id') id: string) {
-    const response = await firstValueFrom(
+  async getUserById(@Param('id') id: string) {
+    const response: GetUserByIdResponse = await firstValueFrom(
       this.usersServiceClient.send(UsersMessageKey.GET_BY_ID, { id }),
     );
-
-    if (!response) throw new NotFoundException('User not found');
 
     return response;
   }
@@ -116,11 +90,9 @@ export class UsersController {
   @ApiNotFoundResponse({ description: 'User not found' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
   async updateUser(@Param('id') id: string, @Body() dto: UpdateUserDto) {
-    const response = await firstValueFrom(
+    const response: UpdateUserResponse = await firstValueFrom(
       this.usersServiceClient.send(UsersMessageKey.UPDATE, { id, user: dto }),
     );
-
-    if (!response) throw new NotFoundException('User not found');
 
     return response;
   }
@@ -130,11 +102,9 @@ export class UsersController {
   @ApiNotFoundResponse({ description: 'User not found' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
   async deleteUser(@Param('id') id: string) {
-    const response = await firstValueFrom(
+    const response: DeleteUserResponse = await firstValueFrom(
       this.usersServiceClient.send(UsersMessageKey.DELETE, { id }),
     );
-
-    if (!response) throw new NotFoundException('User not found');
 
     return response;
   }
