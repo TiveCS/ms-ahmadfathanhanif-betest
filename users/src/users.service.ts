@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
-import { Model } from 'mongoose';
+import { Model, RootFilterQuery } from 'mongoose';
 import { IUser } from './interfaces/user.interface';
 import { IUserFilters } from './interfaces/user-filter.interface';
 
@@ -24,12 +24,17 @@ export class UsersService {
   }
 
   async getUsers(filters?: Partial<IUserFilters>): Promise<User[]> {
-    return this.userModel
-      .find({
-        accountNumber: filters.accountNumber,
-        identityNumber: filters.identityNumber,
-      })
-      .exec();
+    const query: RootFilterQuery<User> = {};
+
+    if (filters?.accountNumber) {
+      query.accountNumber = { $regex: filters.accountNumber, $options: 'i' };
+    }
+
+    if (filters?.identityNumber) {
+      query.identityNumber = { $regex: filters.identityNumber, $options: 'i' };
+    }
+
+    return this.userModel.find(query).exec();
   }
 
   async getById(id: string): Promise<User> {
