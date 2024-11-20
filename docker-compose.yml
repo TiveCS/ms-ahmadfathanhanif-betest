@@ -18,6 +18,8 @@ services:
 
   svc-auth:
     build: ./auth
+    env_file:
+      - .env
     networks:
       - backend
     ports:
@@ -25,6 +27,8 @@ services:
 
   svc-users:
     build: ./users
+    env_file:
+      - .env
     networks:
       - backend
     ports:
@@ -32,6 +36,8 @@ services:
 
   gateway:
     build: ./gateway
+    env_file:
+      - .env
     networks:
       - backend
     ports:
