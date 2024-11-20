@@ -16,16 +16,26 @@ services:
     networks:
       - backend
 
-  # svc-auth:
-  #   build: ./auth
+  svc-auth:
+    build: ./auth
+    networks:
+      - backend
+    ports:
+      - ${SVC_AUTH_PORT}:${SVC_AUTH_PORT}
 
-  # svc-users:
-  #   build: ./users
+  svc-users:
+    build: ./users
+    networks:
+      - backend
+    ports:
+      - ${SVC_USERS_PORT}:${SVC_USERS_PORT}
 
   gateway:
     build: ./gateway
     networks:
       - backend
+    ports:
+      - ${GATEWAY_PORT}:${GATEWAY_PORT}
 
 networks:
   backend:
