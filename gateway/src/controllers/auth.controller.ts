@@ -14,6 +14,7 @@ import { GenerateTokenDto } from '../dto/auth/generate-token.dto';
 import { AuthenticatedGuard } from 'src/shared/guards/authenticated.guard';
 import { Public } from 'src/shared/decorators/public.decorator';
 import { GetUser } from 'src/shared/decorators/get-user.decorator';
+import { GenerateTokenResponse } from 'src/responses/auth/generate-token.response';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -26,11 +27,11 @@ export class AuthController {
   @Public()
   @ApiCreatedResponse({ description: 'Generate token success' })
   async generateToken(@Body() dto: GenerateTokenDto) {
-    const result = await firstValueFrom(
+    const response: GenerateTokenResponse = await firstValueFrom(
       this.authServiceClient.send(AuthMessageKey.GENERATE_TOKEN, dto),
     );
 
-    return result;
+    return response;
   }
 
   @Get('me')
