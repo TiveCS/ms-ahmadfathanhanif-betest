@@ -18,6 +18,8 @@ Can be accessed via http://localhost:8000/api (default port for api gateway is 8
 
 Demo documentation via: https://starkarlo-ahmadfathanhanif.up.railway.app/api
 
+Demo application will be remove on 1 December 2024
+
 ## Architecture Preview
 
 ![Architecture Preview](./architecture-preview.png)
