@@ -15,3 +15,9 @@
 ## API Documentation
 
 Can be accessed via http://localhost:8000/api (default port for api gateway is 8000)
+
+Demo documentation via: https://starkarlo-ahmadfathanhanif.up.railway.app/api
+
+## Architecture Preview
+
+![Architecture Preview](./architecture-preview.png)
